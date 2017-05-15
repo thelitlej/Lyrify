@@ -9,19 +9,20 @@ export default class Spotify{
 	}
 
 
-	search(){
-		new Request('https://api.spotify.com/v1/search/').isGet()
-			.addParam('q', 'honor+him')
-			.addParam('type', 'track')
-			.addParam('limit', '1')
-			.addParam('offset', '10')
-			.send()
-			.then((response) => {
-				console.log(response)
-			})
-			.catch((errorMessage) => {
-				console.log(errorMessage)
-			})
+	search(query){
+		return new Promise((resolve, reject) => {
+			new Request('https://api.spotify.com/v1/search/').isGet()
+				.addParam('q', query)
+				.addParam('type', 'track')
+				.addParam('limit', '1')
+				.send()
+				.then(response => {
+					resolve(response.tracks.items[0].id);
+				})
+				.catch(errorMessage => {
+					reject(errorMessage);
+				});
+		});
 	}
 
 	getSongTitle(id) {
