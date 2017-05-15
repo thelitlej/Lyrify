@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
 import Player from './Player';
-import './App.css';
 import SearchField from './SearchField';
 
 class App extends Component {
@@ -11,7 +9,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div style={{textAlign:'center'}} className="App">
         <Player />
       </div>
     );
