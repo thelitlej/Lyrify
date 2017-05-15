@@ -1,6 +1,6 @@
 
 export default class Request {
-  construct(url) {
+  constructor(url) {
     this.request = new XMLHttpRequest(); 
     this.url = url;
     this.method = '';
@@ -28,9 +28,9 @@ export default class Request {
   send() {
     return new Promise((reject, resolve) => {
       this.request.open(this.method, this.url + this.params, true);
-      this.request.onreadystatechange = () => {
-          if (this.readyState == XMLHttpRequest.DONE ) {
-            if (this.status == 200) {
+      this.request.onreadystatechange = function() {
+          if (this.readyState === XMLHttpRequest.DONE ) {
+            if (this.status === 200) {
               resolve(JSON.parse(this.request.responseText));
             } else {
               reject(this.request.responseText);
