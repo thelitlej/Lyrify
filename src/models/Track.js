@@ -7,4 +7,8 @@ export default class Track {
 		this.imageURL = imageURL;
 		this.lyrics = lyrics;
 	}
+
+  equals(otherTrack) {
+    return this.id === otherTrack.id;
+  }
 }

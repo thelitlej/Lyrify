@@ -10,15 +10,15 @@ export default class LastFM {
         .addParam('method', 'track.getsimilar')
         .addParam('artist', artist)
         .addParam('track', track)
-        .addParam('limit', 1)
+        .addParam('limit', 30)
         .addParam('format', 'json')
         .addParam('api_key', apiKey)
         .isGet()
         .send()
         .then(response => {
-          resolve([response.similartracks.track[0].name, response.similartracks.track[0].artist.name]);
+          resolve(response.similartracks.track);
         });
     });
   }
-  
+
 }
