@@ -10,7 +10,9 @@ export default class Player extends Component {
     this.keyPress = this.keyPress.bind(this);
     this.nextSong = this.nextSong.bind(this);
 
-    this.state = {id: ''};
+    this.state = {track: null};
+    this.tracks = [];
+    this.history = {};
 
     document.addEventListener('keydown', this.keyPress);
   }
@@ -21,30 +23,44 @@ export default class Player extends Component {
 
   keyPress(event) {
     if (event.key === 'ArrowRight') {
-
+      this.nextSong();
     } else if (event.key === 'ArrowLeft') {
-      
+      this.nextSong();
     }
   }
 
   nextSong() {
-    new LastFM().getSimilar('House of the rising sun', 'The Animals')
-      .then(([track, artist]) => {
-        console.log(track, artist);
-        new Spotify().search(track)
-          .then(id => this.play(id))
-          .catch(errorMessage => console.log('Error: ', errorMessage));
-      })
-      .catch(errorMessage => console.log('Error: ', errorMessage));
+    if (this.tracks.length === 0) {
+      new LastFM().getSimilar(this.state.track.trackName, this.state.track.artist)
+        .then((tracks) => {
+          this.tracks = tracks;
+          new Spotify().search(this.tracks.shift().name)
+            .then(track => this.play(track))
+            .catch(errorMessage => console.log('Error: ', errorMessage));
+        })
+        .catch(errorMessage => console.log('Error: ', errorMessage));
+    } else {
+      var lastFMtrack = this.tracks.shift();
+      new Spotify().search(lastFMtrack.name)
+        .then(track => {
+          if (this.history[track.spotifyId] === undefined) {
+            this.play(track);
+          } else {
+            this.nextSong();
+          }
+        })
+        .catch(errorMessage => console.log('Error: ', errorMessage));
+    }
   }
 
-  play(id) {
-    this.setState({id: id});
+  play(track) {
+    this.history[track.spotifyId] = track;
+    this.setState({track: track});
   }
 
   search(query) {
     new Spotify().search(query)
-      .then(track => this.play(track.spotifyId))
+      .then(track => this.play(track))
       .catch(errorMessage => console.log('Error: ', errorMessage));
   }
 
@@ -56,9 +72,9 @@ export default class Player extends Component {
     return (
         <div>
           
-          {this.state.id === '' ?
+          {this.state.track === null ?
               <SearchField onSearch={this.search} /> :
-              <iframe src={'https://open.spotify.com/embed?uri=spotify:track:'+this.state.id}
+              <iframe src={'https://open.spotify.com/embed?uri=spotify:track:'+this.state.track.spotifyId}
                       frameBorder="0" allowTransparency="true"
                       ref={this.startPlaying}>
               </iframe>}
