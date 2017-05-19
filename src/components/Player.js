@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Musixmatch from '../api/Musixmatch';
 import Spotify from '../api/Spotify';
 import LastFM from '../api/LastFM';
 import SearchField from './SearchField';
@@ -14,7 +15,7 @@ export default class Player extends Component {
     this.setAudioPlayer = this.setAudioPlayer.bind(this);
     
 
-    this.state = {track: null};
+    this.state = {track: null, lyrics: ''};
     this.tracks = [];
     this.history = {};
     this.playButtonIntervalId = null;
@@ -57,6 +58,10 @@ export default class Player extends Component {
           }
         })
         .catch(errorMessage => console.log('Error: ', errorMessage));
+      new Musixmatch().getLyrics(lastFMtrack.id)
+        .then((lyrics) => {
+          this.setState({lyrics: lyrics});
+        })
     }
   }
 

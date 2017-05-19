@@ -6,7 +6,7 @@ export default class LastFM {
 
   getSimilar(track, artist) {
     return new Promise((resolve, reject) => {
-      new Request('http://ws.audioscrobbler.com/2.0/')
+      new Request('https://ws.audioscrobbler.com/2.0/')
         .addParam('method', 'track.getsimilar')
         .addParam('artist', artist)
         .addParam('track', track)
