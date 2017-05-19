@@ -23,8 +23,9 @@ export default class Spotify{
 						trackRes.artists[0].name, 
 						trackRes.album.name, 
 						trackRes.id,
-						trackRes.album.images[0].url
-					)
+						trackRes.album.images[0].url,
+						trackRes.preview_url
+					);
 					resolve(track);
 				})
 				.catch(errorMessage => {
