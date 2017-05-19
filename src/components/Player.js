@@ -3,23 +3,25 @@ import Musixmatch from '../api/Musixmatch';
 import Spotify from '../api/Spotify';
 import LastFM from '../api/LastFM';
 import SearchField from './SearchField';
+import Swiper from './Swiper';
+import Info from './Info';
 
 export default class Player extends Component {
   componentWillMount() {
     this.play = this.play.bind(this);
+    this.pause = this.pause.bind(this);
+    this.toggleMusic = this.toggleMusic.bind(this);
     this.search = this.search.bind(this);
     this.keyPress = this.keyPress.bind(this);
     this.nextSong = this.nextSong.bind(this);
-    this.startPlaying = this.startPlaying.bind(this);
-    this.autoplay = this.autoplay.bind(this);
-    this.setAudioPlayer = this.setAudioPlayer.bind(this);
-    
 
-    this.state = {track: null, lyrics: ''};
-    this.tracks = [];
+    this.state = {track: null, lyrics: '', isPlaying: false};
+    this.upcommingTracks = [];
+    this.playlist = [];
     this.history = {};
-    this.playButtonIntervalId = null;
     this.audioPlayer = null;
+
+    this.spotify = new Spotify();
 
     document.addEventListener('keydown', this.keyPress);
   }
@@ -30,6 +32,7 @@ export default class Player extends Component {
 
   keyPress(event) {
     if (event.key === 'ArrowRight') {
+      this.spotify.addToPlayList(this.state.track);
       this.nextSong();
     } else if (event.key === 'ArrowLeft') {
       this.nextSong();
@@ -37,19 +40,20 @@ export default class Player extends Component {
   }
 
   nextSong() {
-    console.log(this.tracks.length);
-    if (this.tracks.length === 0) {
+    if (this.upcommingTracks.length === 0) {
       new LastFM().getSimilar(this.state.track.trackName, this.state.track.artist)
-        .then((tracks) => {
-          this.tracks = tracks;
-          new Spotify().search(this.tracks.shift().name)
+        .then((upcommingTracks) => {
+          this.upcommingTracks = upcommingTracks;
+          var lastFMtrack = this.upcommingTracks.shift();
+          this.spotify.search(lastFMtrack.name)
             .then(track => this.play(track))
             .catch(errorMessage => console.log('Error: ', errorMessage));
         })
         .catch(errorMessage => console.log('Error: ', errorMessage));
+
     } else {
-      var lastFMtrack = this.tracks.shift();
-      new Spotify().search(lastFMtrack.name)
+      var lastFMtrack = this.upcommingTracks.shift();
+      this.spotify.search(lastFMtrack.name)
         .then(track => {
           if (this.history[track.spotifyId] === undefined) {
             this.play(track);
@@ -58,69 +62,76 @@ export default class Player extends Component {
           }
         })
         .catch(errorMessage => console.log('Error: ', errorMessage));
-      new Musixmatch().getLyrics(lastFMtrack.id)
-        .then((lyrics) => {
-          this.setState({lyrics: lyrics});
-        })
+
     }
+  }
+
+  getLyrics(track, artist) {
+    new Musixmatch().getLyrics(track, artist)
+      .then((lyrics) => {
+        this.setState({lyrics: lyrics});
+      })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
   }
 
   play(track) {
     this.history[track.spotifyId] = track;
+    this.getLyrics(track.trackName, track.artist);
     this.setState({track: track});
+
+    if (this.audioPlayer === null) {
+      this.audioPlayer = new Audio(track.audioPreviewUrl);  
+      this.audioPlayer.onended = () => {
+        this.setState({isPlaying: false});
+      };
+    } else {
+      this.audioPlayer.src = track.audioPreviewUrl;
+    }
+    
+    this.audioPlayer.play();
+    this.setState({isPlaying: true});
+  }
+
+  pause() {
+    if (this.audioPlayer !== null) {
+      this.audioPlayer.pause();
+      this.setState({isPlaying: false});
+    }
+  }
+
+  toggleMusic() {
+    if (this.audioPlayer !== null) {
+      if (this.audioPlayer.paused) {
+        this.audioPlayer.play();
+      } else {
+        this.audioPlayer.pause();
+      }
+      this.setState({isPlaying: !this.audioPlayer.paused});
+    }
   }
 
   search(query) {
-    new Spotify().search(query)
+    this.upcommingTracks = [];
+    this.spotify.search(query)
       .then(track => this.play(track))
       .catch(errorMessage => console.log('Error: ', errorMessage));
   }
 
-  setAudioPlayer(player) {
-    this.audioPlayer = player;
-  }
 
-  startPlaying(iframe) {
-    let playButton = iframe.target.contentWindow.document.getElementById('play-button');
-    if (playButton !== null) {
-      playButton.click();
-    }
-  }
-
-  startPlaying2() {
-    let playButton = document.getElementById('play-button');
-    if (playButton !== null) {
-      playButton.click();
-      clearInterval(this.playButtonIntervalId);
-    }
-  }
-
-  autoplay() {
-    this.playButtonIntervalId = setInterval(this.startPlaying2, 500);
-  }
 
   render() {
-    if (this.audioPlayer !== null) {
-      if (this.state.track.audioPreviewUrl === null) {
-        this.nextSong();
-      } else {
-        this.audioPlayer.src = this.state.track.audioPreviewUrl;
-        this.audioPlayer.play();
-      }
-    }
     return (
-        <div>   
-          {this.state.track === null ?
-              <SearchField onSearch={this.search} /> :
-              /*<iframe src={'https://open.spotify.com/embed?uri=spotify:track:'+this.state.track.spotifyId}
-                      frameBorder="0" allowTransparency="true"
-                      width="288"
-                      onLoad={this.startPlaying}>
-              </iframe>*/
-              <audio controls autoPlay ref={this.setAudioPlayer}>
-                <source src={this.state.track.audioPreviewUrl} type="audio/mpeg"/>
-                Your browser does not support the audio element.
-              </audio>}
+        <div> 
+          <SearchField onSearch={this.search} />  
+          <button onClick={this.spotify.savePlaylist}>Save playlist</button>
+          {this.state.track !== null ?
+            <Swiper track={this.state.track} 
+                    lyrics={this.state.lyrics} 
+                    toggleMusic={this.toggleMusic}
+                    isPreviewPlaying={this.state.isPlaying} /> :
+            <Info />}
         </div>
       );
   }
