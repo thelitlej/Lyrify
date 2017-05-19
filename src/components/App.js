@@ -5,9 +5,6 @@ import './App.css';
 import SearchField from './SearchField';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
