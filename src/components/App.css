@@ -5,18 +5,20 @@
 .songSearch{
   padding: 5px;
   font-size: 15px;
-  height: 37px;
+  height: 100%;
   width: 30%;
   border-radius: 0px 5px 5px 0px;
   border: 0;
   border-left-style: none;
   background-color: #1ED760;
   color: white;
+  outline-width: 0;
+  font-weight: bold;
 }
 
 .textInput{
   width: 70%;
-  height: 25px;
+  height: 100%;
   border: 0;
   border-radius: 5px 0 0 5px;
   padding: 5px;
@@ -25,17 +27,84 @@
   padding-left: 10px;
   box-sizing: border-box;
   outline-width: 0;
+  font-weight: bold;
 }
 
 .searchContainer{
-  box-shadow: 0px 0px 4px #888;
+  height: 40px;
   margin: 0;
   padding: 0;
-  max-width: 280px;
+  max-width: 350px;
+  width: 100%;
   border-radius: 5px;
   margin: 30px auto;
+  display: inline-block;
   background-color: white;
+
 }
+
+.swiper{
+  max-height: 400px;
+  max-width: 430px;
+  margin: 0 auto;
+  background-color: blue;
+  border-radius: 5px;
+}
+
+.flex-container{
+  display: flex;
+
+}
+.albumImage{
+  width: 50%;
+  overflow: hidden;
+  border-radius: 5px 0 0 0;
+}
+
+.albumImage img{
+  width: 100%;
+  height: 100%;
+}
+
+.trackInfo{
+  width: 50%;
+  position: relative;
+}
+.trackInfo button{
+  position: absolute;
+  background-color: black;
+  outline-width: 0;
+  width: 100%;
+  border:0;
+  bottom: 0;
+  left: 0;
+  height: 25%;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 13px;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.trackInfo button:active {
+  opacity: 0.5;
+}
+
+.player{
+  width: 100%;
+  height: 50px;
+  background-color: black;
+}
+
+.lyrics{
+  width: 100%;
+  height: 150px;
+  overflow: scroll;
+  background-color: red;
+  border-radius: 0 0 5px 5px;
+}
+
 
 .App {
   text-align: center;
