@@ -15,11 +15,10 @@ export default class SearchField extends Component {
 
 	render() {
 		return(
-			<form onSubmit={this.onSubmit}>
-				<input type="text" onChange={e => this.setState({searchQuery: e.target.value})}>
+			<form onSubmit={this.onSubmit} className="searchContainer">
+				<input className="textInput" type="text" placeholder="Search song" onChange={e => this.setState({searchQuery: e.target.value})}>
 				</input>
-				<input type="submit">
-				</input>
+				<button className="songSearch" type="submit" name="Search">Search</button>
 			</form>
 		)
 	}

@@ -55,7 +55,6 @@ export default class Player extends Component {
   render() {
     return (
         <div>
-          
           {this.state.id === '' ?
               <SearchField onSearch={this.search} /> :
               <iframe src={'https://open.spotify.com/embed?uri=spotify:track:'+this.state.id}

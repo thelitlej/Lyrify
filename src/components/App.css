@@ -1,3 +1,42 @@
+#container{
+  text-align: center;
+}
+
+.songSearch{
+  padding: 5px;
+  font-size: 15px;
+  height: 37px;
+  width: 30%;
+  border-radius: 0px 5px 5px 0px;
+  border: 0;
+  border-left-style: none;
+  background-color: #1ED760;
+  color: white;
+}
+
+.textInput{
+  width: 70%;
+  height: 25px;
+  border: 0;
+  border-radius: 5px 0 0 5px;
+  padding: 5px;
+  font-size: 15px;
+  border-right-style: none;
+  padding-left: 10px;
+  box-sizing: border-box;
+  outline-width: 0;
+}
+
+.searchContainer{
+  box-shadow: 0px 0px 4px #888;
+  margin: 0;
+  padding: 0;
+  max-width: 280px;
+  border-radius: 5px;
+  margin: 30px auto;
+  background-color: white;
+}
+
 .App {
   text-align: center;
 }
