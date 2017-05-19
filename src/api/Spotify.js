@@ -1,4 +1,5 @@
 import Request from './Request';
+import Track from '../models/Track';
 
 const client_id = '29b4f0a8a0b84623b509def4492ef8d1';
 
@@ -8,7 +9,6 @@ export default class Spotify{
 
 	}
 
-
 	search(query){
 		return new Promise((resolve, reject) => {
 			new Request('https://api.spotify.com/v1/search/').isGet()
@@ -17,7 +17,15 @@ export default class Spotify{
 				.addParam('limit', '1')
 				.send()
 				.then(response => {
-					resolve(response.tracks.items[0].id);
+					var trackRes = response.tracks.items[0];
+					var track = new Track(
+						trackRes.name, 
+						trackRes.artists[0].name, 
+						trackRes.album.name, 
+						trackRes.id,
+						trackRes.album.images[0].url
+					)
+					resolve(track);
 				})
 				.catch(errorMessage => {
 					reject(errorMessage);
@@ -25,22 +33,17 @@ export default class Spotify{
 		});
 	}
 
-	getSongTitle(id) {
-		new Request('https://api.spotify.com/v1/tracks/'+id).isGet().send()
-		.then((response) => {
-			console.log(response.name)
+	getTrackInfo(id) {
+		return new Promise((resolve, reject) => {
+			new Request('https://api.spotify.com/v1/tracks/'+id).isGet()
+			.send()
+			.then((response) => {
+				resolve(response);
+			})
+			.catch((errorMessage) => {
+				reject(errorMessage);
+			});
 		})
-		.catch((errorMessage) => {
-			console.log(errorMessage)
-		})
-	}
-
-	getAlbumName(){
-
-	}
-
-	getAlbumImage(){
-
 	}
 
 	addToPlayList(){

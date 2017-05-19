@@ -16,7 +16,7 @@ export default class Player extends Component {
 
   search(query) {
     new Spotify().search(query)
-      .then(id => this.play(id))
+      .then(track => this.play(track.spotifyId))
       .catch(errorMessage => console.log('Error: ', errorMessage));
   }
 
