@@ -44,6 +44,7 @@ export default class Spotify{
 				reject(errorMessage);
 			});
 		})
+
 	}
 
 	addToPlayList(){
