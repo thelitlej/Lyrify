@@ -75,6 +75,6 @@ export default class Spotify{
       '&response_type=token' +
       '&scope=playlist-read-private%20playlist-modify%20playlist-modify-private' +
       '&redirect_uri=' + encodeURIComponent(redirect + '/' + redirect_uri);
-    var w = window.open(url, 'asdf', 'WIDTH=400,HEIGHT=500');
+    window.open(url, 'asdf', 'WIDTH=400,HEIGHT=500');
   }
 }

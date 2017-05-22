@@ -11,6 +11,6 @@ export default class Track {
 	}
 
   equals(otherTrack) {
-    return this.id === otherTrack.id;
+    return this.spotifyId === otherTrack.spotifyId;
   }
 }
