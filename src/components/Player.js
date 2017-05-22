@@ -132,9 +132,9 @@ export default class Player extends Component {
                     lyrics={this.state.lyrics} 
                     toggleMusic={this.toggleMusic}
                     isPreviewPlaying={this.state.isPlaying} />
-            <button className="removeFromPlaylist">╳</button>
+            <button className="removeFromPlaylist"><i className="material-icons">clear</i></button>
             <button onClick={this.spotify.savePlaylist} className="savePlaylist">Save playlist</button>
-            <button className="addToPlaylist">✓</button></div>) :
+            <button className="addToPlaylist"><i className="material-icons">playlist_add</i></button></div>) :
             <Info />}
 
         </div>
