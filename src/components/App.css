@@ -85,11 +85,14 @@
 .play-pause {
   z-index: 1;
   position: absolute;
-  font-size: 50px;
-  top: 40%;
-  left: 0;
-  right: 0;
+  top: 29.2%;
+  left: 29.2%;
   text-shadow: 0 2px 6px rgba(0, 0, 0, .7);
+}
+
+.play-pause i {
+  font-size: 90px;
+
 }
 
 .trackInfo{
@@ -206,7 +209,7 @@
 
 .lyrics{
   width: 100%;
-  max-height: 200px;
+  /*max-height: 200px;*/
   overflow-y: scroll;
   background-color: #6C6C6C;
   box-sizing: border-box;

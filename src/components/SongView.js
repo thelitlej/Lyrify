@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
 
 export default class SongView extends Component {
   componentWillMount(){
@@ -20,13 +22,17 @@ export default class SongView extends Component {
     this.props.toggleMusic();
   }
 
+  
+
   render(){
     return(
-      <div className={'songView '+this.props.className}>
+      <div className={'songView '+this.props.className} style={{backgroundColor: this.props.track.color}}>
         <div className="header">
           <div className="albumImage" onClick={this.togglePreviewSong}>
-            <p className="play-pause">{this.props.isPreviewPlaying ? '▍▍' : '▶'}</p>
-            <img style={{animationPlayState: (this.props.isPreviewPlaying ? 'running' : 'paused')}} src={this.props.track.imageURL} alt="Album cover"/>
+            <p className="play-pause">{this.props.isPreviewPlaying ? <i className="material-icons">pause_circle_outline</i> : <i className="material-icons">play_circle_outline</i>}</p>
+            <img style={{animationPlayState: (this.props.isPreviewPlaying ? 'running' : 'paused')}} 
+                 src={this.props.track.imageURL} 
+                 alt="Album cover" />
           </div>
 
           <div className="trackInfo">
