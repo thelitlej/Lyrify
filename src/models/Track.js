@@ -14,14 +14,13 @@ export default class Track {
   }
 
   getDominantColor(){
-
     var img = document.createElement('img');
     img.src = this.imageURL + '?' + new Date().getTime();
     img.setAttribute('crossOrigin', '');
     img.addEventListener('load', () => {
       var vibrant = new window.Vibrant(img);
       this.color = vibrant.VibrantSwatch.getHex();
-    })
+    });
   }
 
   equals(otherTrack) {

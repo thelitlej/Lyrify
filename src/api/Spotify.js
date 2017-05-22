@@ -23,16 +23,20 @@ export default class Spotify{
 				.send()
 				.then(response => {
 					var trackRes = response.tracks.items[0];
-					var track = new Track(
-						trackRes.name, 
-						trackRes.artists[0].name, 
-						trackRes.album.name, 
-						trackRes.id,
-						trackRes.uri,
-						trackRes.album.images[0].url,
-						trackRes.preview_url
-					);
-					resolve(track);
+          if (trackRes === undefined) {
+            reject('No song found');
+          } else {
+  					var track = new Track(
+  						trackRes.name, 
+  						trackRes.artists[0].name, 
+  						trackRes.album.name, 
+  						trackRes.id,
+  						trackRes.uri,
+  						trackRes.album.images[0].url,
+  						trackRes.preview_url
+  					);
+  					resolve(track);
+          }
 				})
 				.catch(errorMessage => {
 					reject(errorMessage);

@@ -13,10 +13,12 @@ export default class Player extends Component {
     this.pause = this.pause.bind(this);
     this.toggleMusic = this.toggleMusic.bind(this);
     this.search = this.search.bind(this);
-    this.keyPress = this.keyPress.bind(this);
     this.nextSong = this.nextSong.bind(this);
     this.loadNextSong = this.loadNextSong.bind(this);
+    this.addToPlaylist = this.addToPlaylist.bind(this);
+    this.removeFromPlaylist = this.removeFromPlaylist.bind(this);
     this.enableAudioOnMobile = this.enableAudioOnMobile.bind(this);
+    this.saveSwiper = this.saveSwiper.bind(this);
 
     this.state = {track: null, nextTrack: null, lyrics: '', isPlaying: false};
     this.upcommingTracks = [];
@@ -26,13 +28,10 @@ export default class Player extends Component {
 
     this.spotify = new Spotify();
 
-    //document.addEventListener('keydown', this.keyPress);
+    this.swiper = null;
+
     this.enableAudioOnMobile();
 
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.keyPress);
   }
 
   /**
@@ -55,19 +54,6 @@ export default class Player extends Component {
         this.mobileAudioPlay = true;
       }
     });
-  }
-
-  keyPress(event) {
-    if (event.repeat) return;
-
-    if (event.key === 'ArrowRight') {
-      this.setState({swipeIndex: 2});
-      this.spotify.addToPlayList(this.state.track);
-      this.nextSong();
-    } else if (event.key === 'ArrowLeft') {
-      this.setState({swipeIndex: 0});
-      this.nextSong();
-    }
   }
 
   nextSong() {
@@ -134,7 +120,10 @@ export default class Player extends Component {
             this.loadNextSong();
           }
         })
-        .catch(errorMessage => console.log('Error: ', errorMessage));
+        .catch(errorMessage => {
+          this.loadNextSong();
+          console.log('Error: ', errorMessage);
+        });
 
     }
   }
@@ -201,6 +190,21 @@ export default class Player extends Component {
       .catch(errorMessage => console.log('Error: ', errorMessage));
   }
 
+  saveSwiper(swiper) {
+    this.swiper = swiper;
+  }
+
+  addToPlaylist() {
+    if (this.swiper !== null) {
+      this.swiper.swipeRight();
+    }
+  }
+
+  removeFromPlaylist() {
+    if (this.swiper !== null) {
+      this.swiper.swipeLeft();
+    }
+  }
 
   render() {
     return (
@@ -212,14 +216,20 @@ export default class Player extends Component {
               <Swiper 
                 track={this.state.track} 
                 nextTrack={this.state.nextTrack} 
-                swipeRight={this.nextSong}
+                swipeRight={() => {
+                  this.spotify.addToPlayList(this.state.track);
+                  this.nextSong();
+                }}
                 swipeLeft={this.nextSong}
                 toggleMusic={this.toggleMusic}
-                isPreviewPlaying={this.state.isPlaying} />
+                isPreviewPlaying={this.state.isPlaying}
+                ref={this.saveSwiper} />
               <div className="action-bar">
-                <button className="removeFromPlaylist"><i className="material-icons">clear</i></button>
+                <button className="removeFromPlaylist"
+                        onClick={this.removeFromPlaylist}><i className="material-icons">clear</i></button>
                 <button onClick={this.spotify.savePlaylist} className="savePlaylist">Save playlist</button>
-                <button className="addToPlaylist"><i className="material-icons">playlist_add</i></button>
+                <button className="addToPlaylist"
+                        onClick={this.addToPlaylist}><i className="material-icons">playlist_add</i></button>
               </div>
              </div> :
             <Info />}
