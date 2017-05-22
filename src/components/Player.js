@@ -125,13 +125,18 @@ export default class Player extends Component {
     return (
         <div> 
           <SearchField onSearch={this.search} />  
-          <button onClick={this.spotify.savePlaylist}>Save playlist</button>
+          
           {this.state.track !== null ?
-            <Swiper track={this.state.track} 
+            (<div>
+              <Swiper track={this.state.track} 
                     lyrics={this.state.lyrics} 
                     toggleMusic={this.toggleMusic}
-                    isPreviewPlaying={this.state.isPlaying} /> :
+                    isPreviewPlaying={this.state.isPlaying} />
+            <button className="removeFromPlaylist">╳</button>
+            <button onClick={this.spotify.savePlaylist} className="savePlaylist">Save playlist</button>
+            <button className="addToPlaylist">✓</button></div>) :
             <Info />}
+
         </div>
       );
   }
