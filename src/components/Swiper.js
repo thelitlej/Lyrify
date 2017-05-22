@@ -6,7 +6,7 @@ import SongView from './SongView';
 
 //import Swing from 'react-swing';
 
-import { Stack, Card, Direction } from 'swing';
+import { Stack, Direction } from 'swing';
 
 //import SwipeableViews from 'react-swipeable-views';
 //import { bindKeyboard } from 'react-swipeable-views-utils';

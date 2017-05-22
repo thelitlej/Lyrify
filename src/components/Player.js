@@ -226,10 +226,10 @@ export default class Player extends Component {
                 ref={this.saveSwiper} />
               <div className="action-bar">
                 <button className="removeFromPlaylist"
-                        onClick={this.removeFromPlaylist}>╳</button>
+                        onClick={this.removeFromPlaylist}><i className="material-icons">clear</i></button>
                 <button onClick={this.spotify.savePlaylist} className="savePlaylist">Save playlist</button>
                 <button className="addToPlaylist"
-                        onClick={this.addToPlaylist}>✓</button>
+                        onClick={this.addToPlaylist}><i className="material-icons">playlist_add</i></button>
               </div>
              </div> :
             <Info />}
