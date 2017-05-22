@@ -20,6 +20,8 @@ export default class Swiper extends Component {
   componentWillMount() {
     this.addCard = this.addCard.bind(this);
     this.keyPress = this.keyPress.bind(this);
+    this.swipeRight = this.swipeRight.bind(this);
+    this.swipeLeft = this.swipeLeft.bind(this);
 
     this.stack = Stack({
       allowedDirections: [Direction.LEFT, Direction.RIGHT],
@@ -54,11 +56,18 @@ export default class Swiper extends Component {
     if (event.repeat) return;
 
     if (event.key === 'ArrowRight') {
-      //this.spotify.addToPlayList(this.state.track);
-      this.card.throwOut(1, 0);
+      this.swipeRight();
     } else if (event.key === 'ArrowLeft') {
-      this.card.throwOut(-1, 0);
+      this.swipeLeft();
     }
+  }
+
+  swipeRight() {
+    this.card.throwOut(1, 0);
+  }
+
+  swipeLeft() {
+    this.card.throwOut(-1, 0);
   }
 
   addCard(song) {
