@@ -14,10 +14,10 @@ export default class Musixmatch {
         .isJsonP()
         .send()
         .then(response => {
-          if (response.message.body !== '') {
+          if (response.message.body !== '' && response.message.body.lyrics !== undefined && response.message.body.lyrics.lyrics_body !== '') {
             resolve(response.message.body.lyrics.lyrics_body);
           } else {
-            throw new Error('No response');
+            reject('No response');
           }
         })
         .catch(error => reject(error));
@@ -43,15 +43,24 @@ export default class Musixmatch {
         .send()
         .then(response => {
           if (response.message.body !== '') {
-            this.getLyricsFromId(response.message.body.track_list[0].track.track_id)
-              .then((lyrics) => {
-                resolve(lyrics);
-              });
+            if (response.message.body.track_list.length !== 0) {
+              this.getLyricsFromId(response.message.body.track_list[0].track.track_id)
+                .then((lyrics) => {
+                  resolve(lyrics);
+                })
+                .catch((error) => {
+                  resolve('** No lyrics found **');
+                });
+            } else {
+              resolve('** No lyrics found **');
+            }
           } else {
-            throw new Error('No response');
+            reject('No response');
           }
         })
-        .catch(error => reject(error));
+        .catch(error => {
+          resolve('** No lyrics found **');
+        });
     });
   }
 }
