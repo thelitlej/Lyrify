@@ -51,16 +51,16 @@ table {
 
 
 html, body {
-	height: 100%;
+	min-height: 100%;
 	width: 100%;
 }
 
 body {
-  font-family: 'Quicksand', sans-serif;
-  background: #393939; /* For browsers that do not support gradients */
+ 	font-family: 'Quicksand', sans-serif;
+ 	background: #393939; /* For browsers that do not support gradients */
 	background: linear-gradient(#393939, #181818); /* Standard syntax */
 	background-repeat: no-repeat;
-
+	
 }
 
 input {
@@ -69,4 +69,16 @@ input {
 
 button {
 	font-family: 'Quicksand', sans-serif;
+}
+
+.z-index-1 {
+	z-index: 1;
+}
+
+.z-index-2 {
+	z-index: 2;
+}
+
+.z-index-3 {
+	z-index: 3;
 }
