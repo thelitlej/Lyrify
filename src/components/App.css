@@ -53,10 +53,11 @@
   right: 0;
   max-width: 430px;
   margin: 0 auto;
-  background-color: #E53935;
+  background-color: #CCC;
   border-radius: 6px 5px 6px 6px;
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
+  transition: background-color 1s;
 }
 
 .header{
@@ -71,6 +72,7 @@
   border-radius: 5px 0 0 0;
   background-color: #282828;
   position: relative;
+  
 }
 
 .albumImage img{

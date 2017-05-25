@@ -4,7 +4,6 @@ export default class SongView extends Component {
   componentWillMount(){
     this.playFullSong = this.playFullSong.bind(this);
     this.togglePreviewSong = this.togglePreviewSong.bind(this);
-
     this.state = {playingFullSong: false};
   }
 
@@ -28,7 +27,7 @@ export default class SongView extends Component {
         <div className="header">
           <div className="albumImage" onClick={this.togglePreviewSong}>
             <p className="play-pause">{this.props.isPreviewPlaying ? <i className="material-icons">pause_circle_outline</i> : <i className="material-icons">play_circle_outline</i>}</p>
-            <img style={{animationPlayState: (this.props.isPreviewPlaying ? 'running' : 'paused')}} 
+            <img draggable="false" style={{animationPlayState: (this.props.isPreviewPlaying ? 'running' : 'paused')}} 
                  src={this.props.track.imageURL} 
                  alt="Album cover" />
           </div>

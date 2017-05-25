@@ -9,7 +9,7 @@ export default class Track {
     this.imageURL = imageURL;
     this.audioPreviewUrl = audioPreviewUrl;
     this.lyrics = lyrics;
-    this.color = '#E53935';
+    this.color = '#CCC';
     this.getDominantColor();
   }
 

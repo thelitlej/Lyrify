@@ -145,20 +145,22 @@ export default class Player extends Component {
   }
 
   play(track) {
-    this.history[track.spotifyId] = track;
-    this.setState({track: track});
+      this.history[track.spotifyId] = track;
+      this.setState({track: track});
 
-    if (this.audioPlayer === null) {
-      this.audioPlayer = new Audio(track.audioPreviewUrl);  
-      this.audioPlayer.onended = () => {
-        this.setState({isPlaying: false});
-      };
-    } else {
-      this.audioPlayer.src = track.audioPreviewUrl;
-    }
+      if (this.audioPlayer === null) {
+        this.audioPlayer = new Audio(track.audioPreviewUrl);  
+        this.audioPlayer.onended = () => {
+          this.setState({isPlaying: false});
+        };
+      } else {
+        this.audioPlayer.src = track.audioPreviewUrl;
+      }
+      
+      this.audioPlayer.play();
+      this.setState({isPlaying: true});
+   
     
-    this.audioPlayer.play();
-    this.setState({isPlaying: true});
   }
 
   pause() {
