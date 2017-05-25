@@ -59,11 +59,15 @@ export default class Spotify{
 	}
 
 	addToPlayList(track){
-		this.playlist.push(track.spotifyUri);
+		this.playlist.push(track);
 	}
 
   savePlaylist() {
-    localStorage.setItem('createplaylist-tracks', JSON.stringify(this.playlist));
+    var spotifyPlaylist = [];
+    for (var track of this.playlist) {
+      spotifyPlaylist.push(track.spotifyUri);
+    }
+    localStorage.setItem('createplaylist-tracks', JSON.stringify(spotifyPlaylist));
     localStorage.setItem('createplaylist-name', 'New Playlist');
     this.openLogin();
   }
