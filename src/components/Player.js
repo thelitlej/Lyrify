@@ -60,32 +60,9 @@ export default class Player extends Component {
     if (this.state.nextTrack !== null) {
       this.play(this.state.nextTrack);
       this.loadNextSong();
-    }
-    /*
-    if (this.upcommingTracks.length === 0) {
-      new LastFM().getSimilar(this.state.track.trackName, this.state.track.artist)
-        .then((upcommingTracks) => {
-          this.upcommingTracks = upcommingTracks;
-          var lastFMtrack = this.upcommingTracks.shift();
-          this.spotify.search(lastFMtrack.name)
-            .then(track => this.play(track))
-            .catch(errorMessage => console.log('Error: ', errorMessage));
-        })
-        .catch(errorMessage => console.log('Error: ', errorMessage));
-
     } else {
-      var lastFMtrack = this.upcommingTracks.shift();
-      this.spotify.search(lastFMtrack.name)
-        .then(track => {
-          if (this.history[track.spotifyId] === undefined) {
-            this.play(track);
-          } else {
-            this.nextSong();
-          }
-        })
-        .catch(errorMessage => console.log('Error: ', errorMessage));
+      this.setState({track: null});
     }
-    */
   }
 
   loadNextSong() {
@@ -94,7 +71,6 @@ export default class Player extends Component {
         .then((upcommingTracks) => {
           if (upcommingTracks.length === 0) {
             console.log('No more songs');
-            this.setState({track: null});
 
           } else {
             this.upcommingTracks = upcommingTracks;
@@ -131,7 +107,9 @@ export default class Player extends Component {
   getLyrics(track) {
     new Musixmatch().getLyrics(track.trackName, track.artist)
       .then((lyrics) => {
-        if (this.state.track.equals(track)) {
+        if (this.state.track === null) {
+          // no song
+        } else if (this.state.track.equals(track)) {
           track.lyrics = lyrics;
           this.setState({track: track});
         } else if (this.state.nextTrack.equals(track)) {
