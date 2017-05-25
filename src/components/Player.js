@@ -5,6 +5,7 @@ import LastFM from '../api/LastFM';
 import SearchField from './SearchField';
 import Swiper from './Swiper';
 import Info from './Info';
+import Playlist from './Playlist';
 
 
 export default class Player extends Component {
@@ -218,6 +219,7 @@ export default class Player extends Component {
              </div> :
             <Info />}
 
+            <Playlist playlist={this.spotify.playlist} />
         </div>
       );
   }
