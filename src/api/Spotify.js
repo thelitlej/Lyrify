@@ -26,27 +26,29 @@ export default class Spotify{
           if (trackRes === undefined) {
             reject('No song found');
           } else {
-  					var track = new Track(
-  						trackRes.name, 
-  						trackRes.artists[0].name, 
-  						trackRes.album.name, 
-  						trackRes.id,
-  						trackRes.uri,
-  						trackRes.album.images[0].url,
-  						trackRes.preview_url
-  					);
-  					resolve(track);
+			var track = new Track(
+				trackRes.name, 
+				trackRes.artists[0].name, 
+				trackRes.album.name, 
+				trackRes.id,
+				trackRes.uri,
+				trackRes.album.images[0].url,
+				trackRes.preview_url
+			);
+			resolve(track);
           }
-				})
-				.catch(errorMessage => {
-					reject(errorMessage);
-				});
+			})
+			.catch(errorMessage => {
+				reject(errorMessage);
+			});
 		});
 	}
 
 	getTrackInfo(id) {
 		return new Promise((resolve, reject) => {
-			new Request('https://api.spotify.com/v1/tracks/'+id).isGet()
+			new Request('https://api.spotify.com/v1/tracks/'+id)
+			.isGet()
+			.addParam('market', 'SE')
 			.send()
 			.then((response) => {
 				resolve(response);

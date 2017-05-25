@@ -131,14 +131,18 @@ export default class Player extends Component {
         this.audioPlayer.onended = () => {
           this.setState({isPlaying: false});
         };
+        this.setState({isPlaying: true});
+        this.audioPlayer.play();
       } else {
-        this.audioPlayer.src = track.audioPreviewUrl;
+        if (track.audioPreviewUrl !== null) {
+          this.audioPlayer.src = track.audioPreviewUrl;
+          this.setState({isPlaying: true});
+          this.audioPlayer.play();
+        } else {
+          this.setState({isPlaying: false});
+          this.audioPlayer.pause();
+        }
       }
-      
-      this.audioPlayer.play();
-      this.setState({isPlaying: true});
-   
-    
   }
 
   pause() {
@@ -149,7 +153,7 @@ export default class Player extends Component {
   }
 
   toggleMusic() {
-    if (this.audioPlayer !== null) {
+    if (this.audioPlayer !== null && this.state.track.audioPreviewUrl !== null) {
       if (this.audioPlayer.paused) {
         this.audioPlayer.play();
       } else {
