@@ -14,9 +14,9 @@ class Track extends Component {
         <img className="album-image"
              src={this.props.track.imageURL} 
              alt="Album image"/>
-        <span className="song-info">
+        <span className="song-info" style={{backgroundColor: this.props.track.color}}>
           <h3>{this.props.track.trackName}</h3>
-          <p>{this.props.track.album}</p>
+          <p>{this.props.track.artist}</p>
         </span>
       </li>
     );
