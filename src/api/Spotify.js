@@ -26,16 +26,18 @@ export default class Spotify{
           if (trackRes === undefined) {
             reject('No song found');
           } else {
-			var track = new Track(
-				trackRes.name, 
-				trackRes.artists[0].name, 
-				trackRes.album.name, 
-				trackRes.id,
-				trackRes.uri,
-				trackRes.album.images[0].url,
-				trackRes.preview_url
-			);
-			resolve(track);
+            this.getTrackInfo(trackRes.id).then((trackInfo) => {
+        			var track = new Track(
+        				trackInfo.name, 
+        				trackInfo.artists[0].name, 
+        				trackInfo.album.name, 
+        				trackInfo.id,
+        				trackInfo.uri,
+        				trackInfo.album.images[0].url,
+        				trackInfo.preview_url
+        			);
+        			resolve(track);
+            });
           }
 			})
 			.catch(errorMessage => {

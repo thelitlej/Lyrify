@@ -18,10 +18,11 @@ export default class Player extends Component {
     this.loadNextSong = this.loadNextSong.bind(this);
     this.addToPlaylist = this.addToPlaylist.bind(this);
     this.removeFromPlaylist = this.removeFromPlaylist.bind(this);
+    this.toggleShowPlaylist = this.toggleShowPlaylist.bind(this);
     this.enableAudioOnMobile = this.enableAudioOnMobile.bind(this);
     this.saveSwiper = this.saveSwiper.bind(this);
 
-    this.state = {track: null, nextTrack: null, lyrics: '', isPlaying: false};
+    this.state = {track: null, nextTrack: null, lyrics: '', isPlaying: false, showPlaylist: false};
     this.upcommingTracks = [];
     this.playlist = [];
     this.history = {};
@@ -46,6 +47,9 @@ export default class Player extends Component {
     document.addEventListener('click', () => {
       if (this.audioPlayer === null) {
         this.audioPlayer = new Audio(''); 
+        this.audioPlayer.onended = () => {
+          this.setState({isPlaying: false});
+        };
       }
       if (this.mobileAudioPlay === false) {
         this.audioPlayer.addEventListener('error', (e) => {
@@ -191,6 +195,10 @@ export default class Player extends Component {
     }
   }
 
+  toggleShowPlaylist() {
+    this.setState({showPlaylist: !this.state.showPlaylist});
+  }
+
   render() {
     return (
         <div> 
@@ -209,17 +217,22 @@ export default class Player extends Component {
                 toggleMusic={this.toggleMusic}
                 isPreviewPlaying={this.state.isPlaying}
                 ref={this.saveSwiper} />
+
+
               <div className="action-bar">
                 <button className="removeFromPlaylist"
                         onClick={this.removeFromPlaylist}><i className="material-icons">clear</i></button>
-                <button onClick={this.spotify.savePlaylist} className="savePlaylist">Save playlist</button>
+                <span className="playlist-buttons">
+                  <button className="savePlaylist" onClick={this.spotify.savePlaylist}>Save playlist</button>
+                  <button className="showPlaylist" onClick={this.toggleShowPlaylist}>Show playlist</button>
+                </span>
                 <button className="addToPlaylist"
                         onClick={this.addToPlaylist}><i className="material-icons">playlist_add</i></button>
               </div>
              </div> :
             <Info />}
 
-            <Playlist playlist={this.spotify.playlist} />
+            <Playlist playlist={this.spotify.playlist} hidden={!this.state.showPlaylist} />            
         </div>
       );
   }
