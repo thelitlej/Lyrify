@@ -44,9 +44,9 @@ export default class Player extends Component {
   enableAudioOnMobile() {
     this.mobileAudioPlay = false;
 
-    document.addEventListener('click', () => {
+    var enableFunc = () => {
       if (this.audioPlayer === null) {
-        this.audioPlayer = new Audio(''); 
+        this.audioPlayer = new Audio(); 
         this.audioPlayer.onended = () => {
           this.setState({isPlaying: false});
         };
@@ -58,7 +58,10 @@ export default class Player extends Component {
         this.audioPlayer.play();
         this.mobileAudioPlay = true;
       }
-    });
+      document.removeEventListener('click', enableFunc);
+    };
+
+    document.addEventListener('click', enableFunc);
   }
 
   nextSong() {
