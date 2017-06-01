@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import Musixmatch from '../api/Musixmatch';
 import Spotify from '../api/Spotify';
 import LastFM from '../api/LastFM';
+import Login from '../api/Login';
 import SearchField from './SearchField';
 import Swiper from './Swiper';
 import Info from './Info';
 import Playlist from './Playlist';
+import LoginInfo from './LoginInfo';
 
 
 export default class Player extends Component {
@@ -28,12 +30,18 @@ export default class Player extends Component {
     this.history = {};
     this.audioPlayer = null;
 
-    this.spotify = new Spotify();
+    if (location.hash !== '') {
+      var login = new Login();
+      login.validate();
+      this.spotify = new Spotify(login.token);
+    } else {
+      this.spotify = new Spotify();
+    }
+
 
     this.swiper = null;
 
     this.enableAudioOnMobile();
-
   }
 
   /**
@@ -233,7 +241,10 @@ export default class Player extends Component {
                         onClick={this.addToPlaylist}><i className="material-icons">playlist_add</i></button>
               </div>
              </div> :
-            <Info />}
+            <div>
+              <Info />
+              <LoginInfo spotify={this.spotify} />
+            </div>}
 
             <Playlist playlist={this.spotify.playlist} hidden={!this.state.showPlaylist} />            
         </div>

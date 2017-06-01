@@ -8,6 +8,7 @@ export default class Request {
     this.method = '';
     this.params = '?';
     this.jsonP = false;
+    this.headers = {};
   }
 
   isGet() {
@@ -34,10 +35,20 @@ export default class Request {
     return this;
   }
 
+  addHeader(key, value) {
+    this.headers[key] = value;
+    return this;
+  }
+
   send() {
     return new Promise((resolve, reject) => {
       this.request.withCredentials = false;
       this.request.open(this.method, this.url + this.params, true);
+
+      for (let key of Object.keys(this.headers)) {
+        this.request.setRequestHeader(key, this.headers[key]);
+      }
+
       this.request.onreadystatechange = () => {
           if (this.request.readyState === XMLHttpRequest.DONE ) {
             if (this.request.status === 200) {
